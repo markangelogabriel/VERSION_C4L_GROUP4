@@ -1,0 +1,22 @@
+128 notes
+
+requirement for github :
+
+1) SSH for each github account
+2) sites.google.com/site/cs128lab
+3) ssh-keygen -t rsa -C "git@github.com" (generates SSH key. makes hidden file in C: if windows, home if ubuntu)
+
+
+How to connect to a repository :
+1) git init
+2) git config --global user.email "magabriel4@gmail.com"
+3) git remote add origin "git@github.com:markangelogabriel/gittrial.git" (you can only add once, replace add with set-url if it does not work)
+
+How to clone repository : git clone "git@github.com:markangelogabriel/gittrial.git"
+How to update your copy without recloning (doesn't remove new files) : git pull origin master
+How to commit locally: git commit -m "unang commit"
+How to commit back to github : git push origin master
+How to add file to commit : git add hi.c
+How to check status : git status
+How to check log file : git log
+
