@@ -7,6 +7,7 @@
 		$_SESSION['login']=0; //checks if the user is logged in
 		$_SESSION['rootadmin']=0; //checks if the user is the root admin
 		$_SESSION['username']=NULL; //variable for the username
+		$_SESSION['rootpwd']=NULL;
 	}
 		
 	//connect to database
@@ -33,8 +34,9 @@
 				//if authenticated, sets login variable to 1 and stores the username to variable username
 				$_SESSION['login']=1;
 				$_SESSION['username']=$line['username'];
+				$_SESSION['rootpwd']=$line['password'];//save pwd
 				//checks if the logged-in user is the root admin
-				if(($_POST['username']=='root')&&((md5($_POST['password']))==md5('root'))){
+				if(($_POST['username']=='root')&&(md5($_POST['password'])==$_SESSION['rootpwd'])){
 					//if the root admin is logged in, set rootadmin variable to 1
 					$_SESSION['rootadmin']=1;
 				}
@@ -103,7 +105,7 @@
 					<ul class="nav">
 						<!--navbar if root admin-->	
 						<?php 	if($_SESSION['login']==1 && $_SESSION['rootadmin']==1){?>
-							<li><a href="createaccount.php">Manage Admin Accounts</a></li>		
+							<li><a href="manageaccounts.php">Manage Admin Accounts</a></li>		
 							<li><a href="announcements.php">Announcements </a></li>
 							<li><a href="view.php">View </a></li>
 							<li><a href="search.php">Search </a></li>
@@ -144,7 +146,7 @@
 					<?php 	if($_SESSION['login']==1){?>
 					<center>
 					<h3>Welcome <?php $uname=$_SESSION['username']; echo $uname ?>, You are now logged in</h3>
-					<a href="index.php">Go to hompage </a>
+					<a href="index.php">Go to homepage </a>
 					</center>
 					<?php
 						}
