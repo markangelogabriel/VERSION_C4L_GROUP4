@@ -12,7 +12,7 @@
 		
 	//connect to database
 	if(isset($_POST['submit'])){
-		$conn = pg_pconnect("host=localhost port =5432 dbname=eyescrime user=postgres password=root");
+		$conn = pg_pconnect("host=localhost port =5432 dbname=postgres user=postgres password=root");
 		if (!$conn) {
 		  echo "An error occured.\n";
 		  exit;
@@ -56,7 +56,6 @@
     <title>Eyes Crime</title>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="author" content="rvbulalacao" />
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link href="css/bootstrap-responsive.css" rel="stylesheet" />
 	<style type="text/css">
