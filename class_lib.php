@@ -1,10 +1,10 @@
 <?php
-	
+//class for an administrator account
 class Account{
-	var $username;
-	var $password;
+	var $username; //admin username
+	var $password; //admin password
 		
-	//constructor	
+	//constructor for account
 	function Account($username,$password){
 		$this->username = $username;
 		$this->password = $password;
@@ -27,13 +27,15 @@ class Account{
 	}
 }//Class Account
 	
+//class of all admiin accounts
 class allAccounts{
 	
-	public $accounts_list = array();
+	public $accounts_list = array(); //initialize variable accounts_list as an array
 	
+	//method for getting the accounts from the database
 	function getAccounts(){
 		//connect to database
-		$conn = pg_pconnect("host=localhost port =5432 dbname=eyescrime user=postgres password=root");
+		$conn = pg_pconnect("host=localhost port =5432 dbname=postgres user=postgres password=root");
 		if (!$conn) {
 		  echo "An error occured.\n";
 		  exit;
@@ -55,17 +57,19 @@ class allAccounts{
 			$password = $line['password'];
 			
 			if($username!='root'){
-				/*stores the product in an array of products*/
+				/*stores the account in an array of accounts*/
 				$this->accounts_list[] = new Account($username,$password);
 			}
 		}//while
 			
 			
 		
-	}//end of getProducts
+	}//end of getAccounts
 		
+	//method for displaying the accounts	
 	function displayAccount($account){
 ?>	
+		<!--displays and account in a table cell and a checkbox with a corresponding value-->
 			<div>
 				<td><h5><?php echo $account->username; ?></h5></td>
 				<td><center><input type="checkbox" name="accounts[]" id="check1" value="<?php echo $account->username ?>"></center></td>
@@ -74,8 +78,10 @@ class allAccounts{
 <?php
 	}//end of displayProduct
 	
+	//method that gets all accounts according to the filter specified as parameter(if any)
 	function filterAccounts(){
 		?>
+		<!--displays the table containg the list of accounts-->
 		<center>
 		<table cellpadding="10" border="1">
 		<tr>
@@ -93,14 +99,9 @@ class allAccounts{
 		<td><center><input type="submit" value="Delete"/></center></td>
 		</tr>
 		</table></center><?php
-	}//end of filterProducts
-		
+	}//end of filterAccounts
 	
-
-	
-}//end of class allProducts
-
-
+}//end of class allAccounts
 ?>
 		
 	
