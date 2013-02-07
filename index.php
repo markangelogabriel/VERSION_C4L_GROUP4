@@ -1,5 +1,4 @@
 <?php
-
 	//start session
 	session_start();
 
@@ -18,7 +17,6 @@
     <title>Eyes Crime</title>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="author" content="rvbulalacao" />
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link href="css/bootstrap-responsive.css" rel="stylesheet" />
 	<style type="text/css">
@@ -48,7 +46,7 @@
 					<ul class="nav">
 						<!--navbar if root admin-->	
 						<?php 	if($_SESSION['login']==1 && $_SESSION['rootadmin']==1){?>
-							<li><a href="createaccount.php">Manage Admin Accounts</a></li>		
+							<li><a href="manageaccounts.php">Manage Admin Accounts</a></li>		
 							<li><a href="announcements.php">Announcements </a></li>
 							<li><a href="view.php">View </a></li>
 							<li><a href="search.php">Search </a></li>
@@ -86,11 +84,6 @@
 			<section class="span12">
 				<div class="hero-unit">
 					<h1>Welcome!</h1>
-					<p>Download the zipped copy of the entire sample website. Carefully study how it is structured. Use the template to setup your website. Select one member of your team to email me your output. This exercise is due at the end of the period.</p>
-					<p>Have fun building your site!</p>
-					<p>
-						<a class="btn btn-primary btn-large">Download</a>
-					</p>
 				</div>
 			</section>
 		</div>
