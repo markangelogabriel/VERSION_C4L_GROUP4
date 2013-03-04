@@ -41,11 +41,7 @@ session_destroy();
 				<a class="brand" href="index.php">Eyes Crime</a>
 				<div class="nav-collapse collapse">
 					<ul class="nav">
-							<!--navbar for log out-->
-							<li><a href="login.php">Log in </a><li>
-							<li><a href="announcements.php">Announcements </a><li>
-							<li><a href="view.php">View </a><li>
-							<li><a href="search.php">Search </a></li>
+						<?php include 'navbar_module.php'; ?>
 					</ul>
 				</div>
 			</div>

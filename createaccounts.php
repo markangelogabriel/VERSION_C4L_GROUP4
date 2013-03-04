@@ -2,10 +2,11 @@
 	//start session
 	session_start();	
 	//prevents unautorized access, rootadmin can only access this page
-	if($_SESSION['rootadmin']!=1){
+	if($_SESSION['log']!=1){
 		header("Location: index.php");
 		exit;
 	}
+	$checkduplicate=0; //var for checking for duplicates
 	//if the user sent validates accounts to insert into the database
 	if(isset($_POST['submit'])){
 		//connect to database
@@ -30,11 +31,6 @@
 				//if the sent username already exists in the database set checkduplicate to 1
 				if(($_POST['username']==$line['username'])){
 				$checkduplicate=1;?>
-				<!--alert user that username exists-->
-				<script type="text/javascript">
-					alert("Username already exists.");
-					form.username.focus();
-				</script>
 				<?php	
 				}
 				
@@ -46,10 +42,12 @@
 				$pwd=(md5($_POST["password"]));
 				//insert in db
 				$insert=pg_exec($conn, "INSERT INTO admin VALUES('$username', '$pwd')");?>
-				<script type="text/javascript">
-					alert("Admin account added to database.");
-				</script>
 				<?php
+				$_SESSION['account_username']=$username;
+				$_SESSION['account_password']=$pass;
+				header("Location: createdaccount.php");
+				exit;
+				
 			}
 	
 	
@@ -76,25 +74,6 @@
 			display: block;
 		}
 	</style>
-	<script type="text/javascript">
-		<!--function that validates values sent through POST-->
-		function validateForm(){
-			var form = document.createaccountform;
-			//checks if the root entered a username
-			if(!form.username.value){
-				alert("Username required.");
-				form.username.focus();
-				return false;
-			}
-			//checks if the root entered a password
-			if(!form.password.value){
-				alert("Password required.");
-				form.password.focus();
-				return false;
-			}
-		}//end function validate form(); 
-		
-		</script>
   </head>
   <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -108,13 +87,7 @@
 				<a class="brand" href="index.php">Eyes Crime</a>
 				<div class="nav-collapse collapse">
 					<ul class="nav">
-						<!--navbar if root admin-->	
-							<li><a href="manageaccounts.php">Manage Admin Accounts</a></li>		
-							<li><a href="announcements.php">Announcements </a></li>
-							<li><a href="view.php">View </a></li>
-							<li><a href="search.php">Search </a></li>
-							<li><a href="logout.php">Logout</a><br /></li>	
-							<li>
+						<?php include 'navbar_module.php'; ?>
 					</ul>
 				</div>
 			</div>
@@ -125,21 +98,29 @@
 			<section class="span12">
 				<div class="hero-unit">
 					<!--create account form-->
-					<form name="createaccountform" method="post" onsubmit="return validateForm();" action="createaccounts.php">
+					<form name="createaccountform" method="post" action="createaccounts.php">
 					<center><table>
 					<th colspan="2">CREATE ADMINISTRATOR ACCOUNT</th>
 						<tr>
 							<td></br></td>
 						</tr>
 						<tr>
-								<td>Username: </td><td><input type=text  name=username size="40"></td>
+								<td>Username: </td><td><input type=text  name=username size="40" required=required></td>
 						</tr>
 						<tr>
-								<td>Password: </td><td><input type=password name=password size="40"></td>
+								<td>Password: </td><td><input type=password name=password size="40" required=required></td>
 						</tr>
-						<tr>
-							<td></br></td>
-						</tr>
+						<?php if(isset($checkduplicate) && $checkduplicate==1){?>
+								<tr><td></td><td><h6>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Username already exists.</h6></center></td></tr>
+									<script type="text/javascript">
+									var form = document.createaccountform;
+									form.username.focus();</script>
+								<?php
+								}?>
+						<?php if($checkduplicate==0){?>
+								<tr><td></td><td><h6>    </h6></td></tr>
+								<?php
+								}?>
 						<tr>
 								<td colspan="2"><center><input type=submit name=submit value="create account"></center></td>
 						</tr>

@@ -2,14 +2,6 @@
 	//start session
 	session_start();
 
-	//initialize login variable
-	if(!isset($_SESSION['login'])){
-		$_SESSION['login']=0; //checks if the user is logged in
-		$_SESSION['rootadmin']=0; //checks if the user is the root admin
-		$_SESSION['username']=NULL; //variable for username
-	}
-
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -44,36 +36,7 @@
 				<a class="brand" href="index.php">Eyes Crime</a>
 				<div class="nav-collapse collapse">
 					<ul class="nav">
-						<!--navbar if root admin-->	
-						<?php 	if($_SESSION['login']==1 && $_SESSION['rootadmin']==1){?>
-							<li><a href="manageaccounts.php">Manage Admin Accounts</a></li>		
-							<li><a href="announcements.php">Announcements </a></li>
-							<li><a href="view.php">View </a></li>
-							<li><a href="search.php">Search </a></li>
-							<li><a href="logout.php">Logout</a><br /></li>	
-							<li>
-							<?php
-								}
-							?>
-						<!--navbar if admin-->
-						<?php 	if($_SESSION['login']==1 && $_SESSION['rootadmin']!=1){?>
-							<li><a href="announcements.php">Announcements </a></li>
-							<li><a href="view.php">View </a><li>
-							<li><a href="search.php">Search </a></li>
-							<li><a href="logout.php">Logout</a><br /><li>	
-							
-							<?php
-								}
-							?>
-						<!--navbar if guests-->
-						<?php 	if($_SESSION['login']!=1){?>
-							<li><a href="login.php">Log in </a><li>
-							<li><a href="announcements.php">Announcements </a><li>
-							<li><a href="view.php">View </a><li>
-							<li><a href="search.php">Search </a></li>
-							<?php
-								}
-							?>
+						<?php include 'navbar_module.php'; ?>
 					</ul>
 				</div>
 			</div>

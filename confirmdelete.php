@@ -2,7 +2,7 @@
 //start session
 session_start();	
 	//prevents unautorized access, rootadmin can only access this page
-	if($_SESSION['rootadmin']!=1){
+	if($_SESSION['log']!=1){
 		header("Location: index.php");
 		exit;
 	}
@@ -68,12 +68,7 @@ session_start();
 				<a class="brand" href="index.php">Eyes Crime</a>
 				<div class="nav-collapse collapse">
 					<ul class="nav">
-							<li><a href="manageaccounts.php">Manage Admin Accounts</a></li>		
-							<li><a href="announcements.php">Announcements </a></li>
-							<li><a href="view.php">View </a></li>
-							<li><a href="search.php">Search </a></li>
-							<li><a href="logout.php">Logout</a><br /></li>	
-							
+						<?php include 'navbar_module.php'; ?>
 					</ul>
 				</div>
 			</div>
