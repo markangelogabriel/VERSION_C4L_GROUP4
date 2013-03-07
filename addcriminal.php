@@ -15,6 +15,10 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link href="css/bootstrap-responsive.css" rel="stylesheet" />
+    <link href="css/jquery.toastmessage.css" rel="stylesheet" type="text/css"/>
+   	<script type="text/javascript" src = "js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src = "js/jquery.toastmessage.js"></script>
+  	<script type="text/javascript" src = "js/main.js"></script>
 	<style type="text/css">
 		body {
 			padding-top: 60px;
@@ -69,7 +73,7 @@
 								
 						</tr>
 						<tr>
-								<td colspan="2"><center><input type=submit name=submit value=submit></center></td>
+								<td colspan="2"><center><input type=submit name=submit value=submit onclick = showSuccessCriminal()></center></td>
 						</tr>
 					</table></center>
 					</form>
@@ -77,7 +81,12 @@
 			</section>
 		</div>
 	</div>
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <?php
+		if(isset($_SESSION['added'])){
+			echo "<script>window.onload=showSuccessCriminal();</script>";
+			unset($_SESSION['added']);
+		}
+    ?> 
   </body>
 </html>

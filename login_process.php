@@ -4,6 +4,7 @@
 	$username = pg_escape_string($_POST['username']);
 	$password = md5($_POST['password']);
 	$count = 0;
+	$_SESSION['log']=0;
 	
 	//connect to database
 		$conn = pg_pconnect("host=localhost port =5432 dbname=postgres user=postgres password=root");
@@ -31,6 +32,7 @@
 		}
 		pg_close($conn); 
 		
-		header("Location: login.php"); 					//redirects the page to login.php
+		$_SESSION['welcome']=1;
+		header("Location: viewannouncements.php"); 					//redirects the page to login.php
 		
 ?>

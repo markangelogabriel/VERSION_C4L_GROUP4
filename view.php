@@ -2,6 +2,13 @@
 	//start session
 	session_start();
 
+	//initialize login variable
+	if(!isset($_SESSION['login'])){
+		$_SESSION['login']=0; //checks if the user is logged in
+		$_SESSION['rootadmin']=0; //checks if the user is the root admin
+	}
+
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -43,8 +50,10 @@
 				</a>
 				<a class="brand" href="index.php">Eyes Crime</a>
 				<div class="nav-collapse collapse">
-					<ul class="nav">	
-						<?php include 'navbar_module.php'; ?>
+					<ul class="nav">
+						<?php  
+						include ("navbar_module.php");
+						?>
 					</ul>
 				</div>
 			</div>
@@ -65,18 +74,48 @@
 							<input type="submit" name="view"/>
 						</form>				
 				</div>
- 	
+						
 						<?php
-						// If logged in as Admin
 						if(isset($_SESSION['log'])){
-						
 							if(isset($_POST['view'])){
 								$view_by = $_POST['view_by'];
 								$view = pg_query($conn, "select * from " . $view_by);
 								
 								echo '<table>';
 								
-								// Admin enables to view unverified Crime reports
+								if($view_by == "crime"){
+									while ($viewrow = pg_fetch_array($view)){
+										$criminal_names = pg_query($conn,"SELECT criminal_id, name FROM criminal where criminal_id NOT IN (select criminal_id from criminal_committed_crime where crime_id = {$viewrow[0]}) ORDER BY name");
+										echo '<form name="addcriminaltocrime" method="post" action=addcriminaltocrime.php?crimeid='.$viewrow[0].'><tr>' . '<td>' . $viewrow[0] . '</td><td>' . $viewrow[1] . '</td><td>' . $viewrow[2]. '</td><td>' . $viewrow[3] . $viewrow[4] . '</td>';
+										echo '<td><select id = "crim_name" name="crim_name">'; 
+										while($criminal_name = pg_fetch_assoc($criminal_names)){
+											echo '<option value="' . $criminal_name["criminal_id"] . '">' . $criminal_name["name"] . '</option>';
+										} 
+										echo '</select></td><td><input type = "submit" value = "Add Criminal to crime" /></td><td><a href=deletecrime.php?id='.$viewrow[0].'>Delete&nbsp&nbsp</a></td>';
+										if($viewrow[1] === "f") echo '<td><a href=verifyreport.php?verid='.$viewrow[0].'>Verify Report</a></td>';
+										echo '</tr></form>';
+									}
+								}
+								if($view_by == "crime_type"){
+									while ($viewrow = pg_fetch_array($view))
+										echo '<tr><td>' . $viewrow[1] . '</td></tr>';
+								}
+								if($view_by == "criminal"){
+									while ($viewrow = pg_fetch_array($view))
+										echo '<tr>' . '<td>' . $viewrow[0] . '</td><td>' . $viewrow[1] . '</td><td>' . $viewrow[2]. '</td><td>' . $viewrow[3] . '</td><td><a href=deletecriminal.php?id='.$viewrow[0].'>Delete</a></td></tr>';}
+								
+								echo '</table>';
+								
+								//pg_free_result($viewrow);
+								pg_free_result($view);
+							}
+						}else{
+							if(isset($_POST['view'])){
+								$view_by = $_POST['view_by'];
+								$view = pg_query($conn, "select * from " . $view_by);
+								
+								echo '<table>';
+								
 								if($view_by == "crime"){
 									while ($viewrow = pg_fetch_array($view))
 										echo '<tr>' . '<td>' . $viewrow[0] . '</td><td>' . $viewrow[1] . '</td><td>' . $viewrow[2]. '</td><td>' . $viewrow[3] . $viewrow[4] . '</td></tr>';
@@ -94,36 +133,6 @@
 								//pg_free_result($viewrow);
 								pg_free_result($view);
 							}
-						}
-						//if Guest
-						else{
-
-							if(isset($_POST['view'])){
-								$view_by = $_POST['view_by'];
-								$view = pg_query($conn, "select * from " . $view_by);
-								
-								echo '<table>';
-								
-								//Guest only able to view verified crime
-								if($view_by == "crime"){
-									$view = pg_query($conn, "select * from " . $view_by . " where is_verified is TRUE");								
-									while ($viewrow = pg_fetch_array($view))
-										echo '<tr>' . '<td>' . $viewrow[0] . '</td><td>' . $viewrow[1] . '</td><td>' . $viewrow[2]. '</td><td>' . $viewrow[3] . $viewrow[4] . '</td></tr>';
-								}
-								if($view_by == "crime_type"){
-									while ($viewrow = pg_fetch_array($view))
-										echo '<tr><td>' . $viewrow[1] . '</td></tr>';
-								}
-								if($view_by == "criminal"){
-									while ($viewrow = pg_fetch_array($view))
-										echo '<tr>' . '<td>' . $viewrow[0] . '</td><td>' . $viewrow[1] . '</td><td>' . $viewrow[2]. '</td><td>' . $viewrow[3] . '</td></tr>';}
-								
-								echo '</table>';
-								
-								//pg_free_result($viewrow);
-								pg_free_result($view);
-							}
-						
 						}
 						?>
 				

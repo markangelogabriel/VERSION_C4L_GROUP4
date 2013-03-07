@@ -4,7 +4,6 @@
 	$criminal_name = $_POST['name'];
 	$criminal_birth = $_POST['birthday'];
 	$criminal_sex = $_POST['sex'];
-	$criminal_commit = $_POST['commit'];
 		
 	//connect to database
 
@@ -19,16 +18,8 @@
 			$query1 = "INSERT INTO criminal (name, birthday, sex) VALUES ('{$criminal_name}','{$criminal_birth}','{$criminal_sex}');";
 			$result = pg_query($conn, $query1);
 			
-			/*for($i=0; $i < count($_POST['commit']); $i++){
-				if(isset($_POST['commit'])){
-					$query2 = "INSERT INTO criminal_committed_crime (crime_id,criminal_id) VALUES ('{$checkbox}',(select max(criminal_id) from criminal))";
-			
-				}
-			}
-			$query2 = "INSERT INTO criminal_committed_crime (crime_id,criminal_id) VALUES ('',(select max(criminal_id) from criminal))";*/
-			
 		}
-		
+	$_SESSION['added']=1;
 	pg_close($conn); //close conenction
 	header("Location: addcriminal.php"); 
 ?>
